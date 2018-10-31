@@ -37,7 +37,7 @@ router.get("/createRoom", (req, res) => {
                 name: 'Bàn ' + (j + 1),
                 lobby_id: i
             }
-            Room.createNewRoom(room, (error, results, next) => {
+            Room.createNewRoom(room, (error, results) => {
                 console.log(error);
             });
         }
@@ -45,6 +45,38 @@ router.get("/createRoom", (req, res) => {
     res.send({
         success: true
     })
+});
+
+router.get("/all/:type", (req, res) => {
+    Room.allLobby(req.params.type, (error, results) => {
+        if (error || results == null || results.length == 0) {
+            res.send({
+                success: false,
+                message: "Không lấy được danh sách phòng chơi"
+            });
+        } else {
+            res.send({
+                success: true,
+                data: results
+            })
+        }
+    });
+});
+
+router.get("/table/:lobbyId", (req, res) => {
+    Room.allRoom(req.params.lobbyId, (error, results) => {
+        if (error || results == null || results.length == 0) {
+            res.send({
+                success: false,
+                message: "Không lấy được danh sách phòng chơi"
+            });
+        } else {
+            res.send({
+                success: true,
+                data: results
+            })
+        }
+    });
 });
 
 module.exports = router;

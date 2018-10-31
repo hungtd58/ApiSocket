@@ -12,6 +12,26 @@
 <body>
     <script>
         var socket = io();
+
+        socket.on("connect", () => {
+            console.log("connect");
+            socket.emit("send-info", {
+                id: Math.random(),
+                username: "trhung1710",
+                levels: 0,
+                hasMatch: false
+            });
+        });
+        
+        socket.on("receive-info", () => {
+            console.log("Receive-info");
+            socket.emit("find-match", "");
+        });
+
+        socket.on("match", (room) => {
+            socket.emit("join-match", room);
+        });
+
     </script>
 </body>
 
