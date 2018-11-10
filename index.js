@@ -21,12 +21,13 @@ var userController = require('./db/user/UserController');
 var roomController = require('./db/room/RoomController');
 
 app.use("/auth/", userController);
-app.use("/room/", roomController);
+// app.use("/room/", roomController);
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/views/index.html');
 });
 
+/*
 var usersInLobby = [];
 
 io.on('connection', function (socket) {
@@ -99,7 +100,6 @@ function containsUser(user, lobby) {
     return false;
 }
 
-/*
 let timerId = setTimeout(function match() {
     var matchs = [];
     var item;
