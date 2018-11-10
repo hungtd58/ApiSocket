@@ -30,17 +30,33 @@ app.get('/', function (req, res) {
 var usersInLobby = [];
 
 io.on('connection', function (socket) {
-    console.log('A user connected');
+    console.log('A user connected: ' + socket.id);
 
     socket.on("send-info", (data) => {
-        var user = {
-            socket_id: socket.id,
-            id: data.id,
-            username: data.username,
-            levels: data.levels,
-            hasMatch: false
+        // var user = {
+        //     socket_id: socket.id,
+        //     id: data.id,
+        //     username: data.username,
+        //     levels: data.levels,
+        //     hasMatch: false
+        // }
+
+        var user;
+        try {
+            user = JSON.parse(data);
+        } catch {
+            user = {
+                socket_id: socket.id,
+                id: data.id,
+                username: data.username,
+                levels: data.levels,
+                hasMatch: false
+            }
         }
-        if (socket.id != null &&  !containsUser(user, usersInLobby)) {
+
+        console.log(user);
+
+        if (socket.id != null && !containsUser(user, usersInLobby)) {
             usersInLobby.push(user);
         }
 
@@ -53,7 +69,7 @@ io.on('connection', function (socket) {
         for (item in usersInLobby) {
             console.log("Id1: " + item.socket_id);
             console.log("Id2: " + socket.id);
-            if (item.socket_id == socket.id || item.hasMatch){
+            if (item.socket_id == socket.id || item.hasMatch) {
                 continue;
             }
             var room = socket.id + "-" + item.socket_id;
